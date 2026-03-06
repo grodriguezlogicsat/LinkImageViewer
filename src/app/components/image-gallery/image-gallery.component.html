@@ -1,0 +1,112 @@
+<div class="gallery-header">
+  <h1>
+    <mat-icon class="title-icon">photo_library</mat-icon>
+    Link Image Viewer
+  </h1>
+  <p class="subtitle">Ingresa enlaces de imágenes para crear tu galería</p>
+</div>
+
+<div class="input-section">
+  <mat-form-field appearance="outline" class="url-input">
+    <mat-label>URL de la imagen</mat-label>
+    <input
+      matInput
+      [(ngModel)]="imageUrl"
+      placeholder="https://ejemplo.com/imagen.jpg"
+      (keydown.enter)="addImage()"
+    />
+    <mat-icon matPrefix>link</mat-icon>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="addImage()" class="add-btn">
+    <mat-icon>add_photo_alternate</mat-icon>
+    Agregar
+  </button>
+
+  <button mat-stroked-button color="accent" (click)="openBulkAdd()" class="bulk-btn" matTooltip="Agregar múltiples enlaces a la vez">
+    <mat-icon>playlist_add</mat-icon>
+    Múltiples
+  </button>
+
+  @if (images().length > 0) {
+    <button
+      mat-stroked-button
+      color="warn"
+      (click)="clearAll()"
+      class="clear-btn"
+      matTooltip="Eliminar todas las imágenes"
+    >
+      <mat-icon>delete_sweep</mat-icon>
+      Limpiar
+    </button>
+
+    <button
+      mat-stroked-button
+      (click)="toggleViewMode()"
+      class="view-toggle-btn"
+      [matTooltip]="viewMode() === 'grid' ? 'Cambiar a vista lista' : 'Cambiar a vista cuadrícula'"
+    >
+      <mat-icon>{{ viewMode() === 'grid' ? 'view_agenda' : 'grid_view' }}</mat-icon>
+      {{ viewMode() === 'grid' ? 'Lista' : 'Cuadrícula' }}
+    </button>
+  }
+</div>
+
+@if (images().length === 0) {
+  <div class="empty-state">
+    <mat-icon class="empty-icon">collections</mat-icon>
+    <p>No hay imágenes aún</p>
+    <p class="hint">Pega un enlace de imagen arriba y presiona Enter o el botón Agregar</p>
+  </div>
+} @else {
+  <div class="gallery-info">
+    <span>{{ images().length }} {{ images().length === 1 ? 'imagen' : 'imágenes' }}</span>
+  </div>
+
+  <div class="gallery-grid" [class.list-view]="viewMode() === 'list'">
+    @for (image of images(); track image.url; let i = $index) {
+      <div
+        class="gallery-item"
+        [class.loaded]="image.loaded && !image.error"
+        [class.error]="image.error"
+        (click)="!image.error && openLightbox(i)"
+      >
+        @if (!image.loaded) {
+          <div class="loading-placeholder">
+            <mat-icon>hourglass_empty</mat-icon>
+            <span>Cargando...</span>
+          </div>
+        }
+
+        @if (image.error) {
+          <div class="error-placeholder">
+            <mat-icon>broken_image</mat-icon>
+            <span>Error al cargar</span>
+          </div>
+        }
+
+        <img
+          [src]="image.url"
+          [alt]="'Imagen ' + (i + 1)"
+          (load)="onImageLoad(i)"
+          (error)="onImageError(i)"
+          [style.display]="image.loaded && !image.error ? 'block' : 'none'"
+        />
+
+        <div class="item-overlay">
+          <button
+            mat-icon-button
+            class="remove-btn"
+            (click)="removeImage(i, $event)"
+            matTooltip="Eliminar imagen"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+          @if (!image.error) {
+            <mat-icon class="zoom-icon">zoom_in</mat-icon>
+          }
+        </div>
+      </div>
+    }
+  </div>
+}

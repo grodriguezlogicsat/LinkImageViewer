@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>
+  <mat-icon class="dialog-title-icon">playlist_add</mat-icon>
+  Agregar múltiples imágenes
+</h2>
+
+<mat-dialog-content>
+  <p class="instructions">Pega los enlaces de las imágenes, uno por línea:</p>
+
+  <mat-form-field appearance="outline" class="links-textarea">
+    <mat-label>Enlaces de imágenes</mat-label>
+    <textarea
+      matInput
+      [(ngModel)]="linksText"
+      rows="12"
+      placeholder="https://ejemplo.com/imagen1.jpg
+https://ejemplo.com/imagen2.png
+https://ejemplo.com/imagen3.webp"
+    ></textarea>
+  </mat-form-field>
+
+  @if (linksText.trim()) {
+    <p class="parsed-info">
+      <mat-icon class="info-icon">info</mat-icon>
+      {{ parsedCount }} {{ parsedCount === 1 ? 'enlace válido detectado' : 'enlaces válidos detectados' }}
+    </p>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancelar</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="confirm()"
+    [disabled]="parsedCount === 0"
+  >
+    <mat-icon>add_photo_alternate</mat-icon>
+    Agregar {{ parsedCount }} {{ parsedCount === 1 ? 'imagen' : 'imágenes' }}
+  </button>
+</mat-dialog-actions>

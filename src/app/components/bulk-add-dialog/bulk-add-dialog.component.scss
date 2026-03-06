@@ -1,0 +1,40 @@
+h2[mat-dialog-title] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .dialog-title-icon {
+    color: #e040fb;
+  }
+}
+
+.instructions {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 16px;
+  font-size: 0.9rem;
+}
+
+.links-textarea {
+  width: 100%;
+
+  textarea {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+}
+
+.parsed-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #69f0ae;
+  font-size: 0.85rem;
+  margin: 0;
+
+  .info-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
