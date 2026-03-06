@@ -1,0 +1,29 @@
+<div class="lightbox-container">
+  <button mat-icon-button class="close-btn" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <button
+    mat-icon-button
+    class="nav-btn nav-prev"
+    (click)="navigate('prev')"
+    [disabled]="data.index === 0"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <div class="image-wrapper">
+    <img [src]="data.url" alt="Imagen ampliada" />
+  </div>
+
+  <button
+    mat-icon-button
+    class="nav-btn nav-next"
+    (click)="navigate('next')"
+    [disabled]="data.index === data.total - 1"
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+
+  <div class="image-counter">{{ data.index + 1 }} / {{ data.total }}</div>
+</div>
