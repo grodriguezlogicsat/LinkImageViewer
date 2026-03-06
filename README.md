@@ -1,59 +1,81 @@
 # LinkImageViewer
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.18.
+Visualizador de imágenes por enlaces. Permite ingresar URLs de imágenes y visualizarlas en una galería responsive con modo lightbox.
 
-## Development server
+## Funcionalidades
 
-To start a local development server, run:
+- **Agregar imágenes por URL**: Campo de texto para pegar un enlace individual y cargarlo en la galería.
+- **Carga masiva**: Diálogo para pegar múltiples enlaces (uno por línea) y cargarlos todos de golpe.
+- **Galería responsive**: Cuadrícula CSS Grid que se adapta automáticamente al tamaño de pantalla.
+- **Vista lista**: Modo alternativo donde las imágenes se muestran apiladas verticalmente a ancho completo.
+- **Lightbox**: Al hacer clic en una imagen se amplía con navegación anterior/siguiente y contador.
+- **Manejo de errores**: Indicadores visuales para imágenes en carga o con error.
+- **Eliminar imágenes**: Individualmente o limpiar toda la galería.
+- **Tema oscuro**: Interfaz con fondo oscuro y acentos en rosa/magenta (Material magenta-violet).
+
+## Tecnologías
+
+- **Angular 19** (standalone components, signals)
+- **Angular Material 19** (MatDialog, MatFormField, MatInput, MatButton, MatIcon, MatSnackBar, MatTooltip)
+- **SCSS** con CSS Grid
+- **GitHub Pages** para despliegue
+
+## Estructura de componentes
+
+```
+src/app/components/
+├── image-gallery/        → Componente principal: input de URLs, galería grid/lista
+├── image-lightbox/       → Diálogo lightbox para ampliar imágenes con navegación
+└── bulk-add-dialog/      → Diálogo para cargar múltiples enlaces de golpe
+```
+
+## Desarrollo local
+
+### Requisitos
+
+- Node.js 20+
+- Angular CLI (`npm install -g @angular/cli`)
+
+### Instalar dependencias
+
+```bash
+npm install
+```
+
+### Servidor de desarrollo
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Abre [http://localhost:4200](http://localhost:4200) en tu navegador.
 
-## Code scaffolding
+## Despliegue en GitHub Pages
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Publicar cambios
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Cada vez que hagas cambios y quieras actualizarlos en la página publicada, ejecuta estos comandos en orden:
 
 ```bash
-ng generate --help
+# 1. Agregar los cambios
+git add .
+
+# 2. Crear un commit con un mensaje descriptivo
+git commit -m "descripción de los cambios"
+
+# 3. Subir los cambios al repositorio
+git push
+
+# 4. Construir y desplegar en GitHub Pages
+ng deploy --base-href=/LinkImageViewer/
 ```
 
-## Building
+El paso 4 genera el build de producción y lo sube automáticamente a la rama `gh-pages`, actualizando la página pública.
 
-To build the project run:
+### Resumen rápido
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+| Acción | Comando |
+|--------|---------|
+| Desarrollo local | `ng serve` |
+| Build producción | `ng build` |
+| Publicar en GitHub Pages | `ng deploy --base-href=/LinkImageViewer/` |
