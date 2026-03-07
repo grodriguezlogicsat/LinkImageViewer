@@ -12,8 +12,19 @@
     <mat-icon>chevron_left</mat-icon>
   </button>
 
-  <div class="image-wrapper">
-    <img [src]="data.url" alt="Imagen ampliada" />
+  <div
+    class="image-wrapper"
+    [class.zoomed]="isZoomed()"
+    (click)="onImageClick($event)"
+    (mousemove)="onMouseMove($event)"
+    (wheel)="onWheel($event)"
+  >
+    <img
+      [src]="data.url"
+      alt="Imagen ampliada"
+      [style.transform]="'scale(' + zoomLevel() + ')'"
+      [style.transform-origin]="transformOrigin()"
+    />
   </div>
 
   <button
@@ -25,5 +36,18 @@
     <mat-icon>chevron_right</mat-icon>
   </button>
 
-  <div class="image-counter">{{ data.index + 1 }} / {{ data.total }}</div>
+  <div class="lightbox-footer">
+    <div class="image-counter">{{ data.index + 1 }} / {{ data.total }}</div>
+    <div class="zoom-controls">
+      @if (isZoomed()) {
+        <button mat-icon-button (click)="resetZoom()" matTooltip="Restablecer zoom">
+          <mat-icon>zoom_out</mat-icon>
+        </button>
+      }
+      <span class="zoom-hint">
+        <mat-icon class="hint-icon">{{ isZoomed() ? 'zoom_out' : 'zoom_in' }}</mat-icon>
+        {{ isZoomed() ? 'Clic para alejar' : 'Clic o scroll para zoom' }}
+      </span>
+    </div>
+  </div>
 </div>
