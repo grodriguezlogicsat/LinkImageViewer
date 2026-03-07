@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -33,10 +33,20 @@ interface GalleryImage {
 export class ImageGalleryComponent {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly STORAGE_KEY = 'linkImageViewer_urls';
 
   imageUrl = '';
-  readonly images = signal<GalleryImage[]>([]);
+  readonly images = signal<GalleryImage[]>(this.loadFromStorage());
   readonly viewMode = signal<'grid' | 'list'>('grid');
+
+  constructor() {
+    effect(() => {
+      const urls = this.images()
+        .filter(img => !img.error)
+        .map(img => img.url);
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(urls));
+    });
+  }
 
   toggleViewMode(): void {
     this.viewMode.update(m => (m === 'grid' ? 'list' : 'grid'));
@@ -145,6 +155,17 @@ export class ImageGalleryComponent {
       return url.protocol === 'http:' || url.protocol === 'https:';
     } catch {
       return false;
+    }
+  }
+
+  private loadFromStorage(): GalleryImage[] {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      if (!stored) return [];
+      const urls: string[] = JSON.parse(stored);
+      return urls.map(url => ({ url, loaded: false, error: false }));
+    } catch {
+      return [];
     }
   }
 }
